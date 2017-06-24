@@ -1,0 +1,66 @@
+{% extends "weather/index.html" %}
+{% load staticfiles %}
+{% block main-content %}<div class="header-container">
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <h1 class="text-center">City Weather for 5 days</h1>
+        <br><br>
+        <form action="" method="post" class="form-inline text-center"> {% csrf_token %}
+            <div class="form-group">
+                <label class="sr-only" for="help-search">Search</label>
+                <input class="form-control border-color col-sm-12" name="city" placeholder="Your city name">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+<br><br>
+<div class="row">
+    {% if form.errors %}
+        <div class="col-xs-1 col-sm-1"></div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11"><h1 class="error">City not found</h1></div>
+        </div>
+    {% elif city != "None" %}
+        <div class="col-xs-1 col-sm-1"></div>
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+            <div class="alert alert-info"><h1>The city was found: {{ city }}</h1>{{ notes }}</div>
+        </div>
+        <div class="col-xs-1 col-sm-1"></div></div>
+        <dib class="row">
+            <div class="col-xs-1 col-sm-1"></div>
+        {% for weather in weather_list %}
+            <div class="col-xs-5 col-sm-5 col-md-2 col-lg-2">
+                <div class="thumbnail">
+                    <h4 class="text-center">{{ weather.date }}</h4>
+                    <table class="table table-hover">
+                        <tr>
+                            <td align="center" colspan="2"><img src="/static/media/{{ weather.cloudiness.icon }}" class="img-img" height="100"><br>{{ weather.description }}</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature</td>
+                            <td align="right">{{ weather.temp_min }}...{{ weather.temp_max }}°C</td>
+                        </tr>
+                        <tr>
+                            <td>Pressure</td>
+                            <td align="right">{{ weather.pressure }} hPa</td>
+                        </tr>
+                        <tr>
+                            <td>Humidity</td>
+                            <td align="right">{{ weather.humidity }} %</td>
+                        </tr>
+                        <tr>
+                            <td><span style="white-space:nowrap;">Wind direction</span></td>
+                            <td align="right"><span style="white-space:nowrap;">{{ weather.wind_direction }} ({{ weather.wind_degree }}°)</span></td>
+                        </tr>
+                        <tr>
+                            <td><span style="white-space:nowrap;">Wind speed</span></td>
+                            <td align="right"><span style="white-space:nowrap;">{{ weather.wind_description }}</span><br>({{ weather.wind_speed }} m/s)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+            <div class="col-xs-1 col-sm-1"></div>
+    {% endif %}
+</dib>
+</div>{% endblock %}
